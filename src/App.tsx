@@ -1,6 +1,6 @@
 import {useEffect, useRef, useState} from "react";
 
-import {Pokemon} from "./types";
+import {Pokemon, Count} from "./types";
 import {default as api} from "./api";
 
 function App() {
@@ -9,9 +9,10 @@ function App() {
     name: "",
     image: "",
   });
-  const [count, setCount] = useState({
-    correct: 0,
-    incorrect: 0,
+  const [count, setCount] = useState<Count>(() => {
+    const localData = localStorage.getItem("count");
+
+    return localData !== null ? JSON.parse(localData) : {correct: 0, incorrect: 0};
   });
   const [submitted, setSubmitted] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -41,11 +42,28 @@ function App() {
     if (name === pokemon.name) {
       $image?.classList.add("show");
       inputRef.current?.classList.add("is-success");
-      setCount((prevState) => ({...prevState, correct: prevState.correct + 1}));
+      setCount((prevState) => {
+        const newState = {
+          ...prevState,
+          correct: prevState.correct + 1,
+        };
+
+        localStorage.setItem("count", JSON.stringify(newState));
+
+        return newState;
+      });
     } else {
       inputRef.current?.classList.add("is-error");
+      setCount((prevState) => {
+        const newState = {
+          ...prevState,
+          incorrect: prevState.incorrect + 1,
+        };
 
-      setCount((prevState) => ({...prevState, incorrect: prevState.incorrect + 1}));
+        localStorage.setItem("count", JSON.stringify(newState));
+
+        return newState;
+      });
     }
   }
 
@@ -70,37 +88,31 @@ function App() {
     <main>
       {/* Let&apos;s get this party started */}
       <h1>¿Quién es este Pokemon?</h1>
-      {pokemon.image !== "" ? (
-        <>
-          <img alt="pokemon image" src={pokemon.image} />
-          <form onSubmit={handleSubmit}>
-            <input ref={inputRef} autoFocus className="nes-input" name="name" type="text" />
-            <button
-              className={`nes-btn ${submitted ? "is-disabled" : "is-primary"}`}
-              disabled={submitted}
-              type="submit"
-            >
-              Adivinar
-            </button>
-          </form>
-          <section className="icon-list">
-            {count.correct}
-            <i className="nes-pokeball is-large" />
-            {count.incorrect}
-            <i className="nes-icon close is-large" />
-          </section>
-          <button
-            className={`nes-btn ${!submitted ? "is-disabled" : "is-primary"}`}
-            disabled={!submitted}
-            type="button"
-            onClick={onClick}
-          >
-            Volver a jugar
-          </button>
-        </>
-      ) : (
-        <p className="">Loading...</p>
-      )}
+      <img src={pokemon.image} />
+      <form onSubmit={handleSubmit}>
+        <input ref={inputRef} autoFocus className="nes-input" name="name" type="text" />
+        <button
+          className={`nes-btn ${submitted ? "is-disabled" : "is-primary"}`}
+          disabled={submitted}
+          type="submit"
+        >
+          Adivinar
+        </button>
+      </form>
+      <section className="icon-list">
+        {count.correct}
+        <i className="nes-pokeball is-large" />
+        {count.incorrect}
+        <i className="nes-icon close is-large" />
+      </section>
+      <button
+        className={`nes-btn ${!submitted ? "is-disabled" : "is-primary"}`}
+        disabled={!submitted}
+        type="button"
+        onClick={onClick}
+      >
+        Volver a jugar
+      </button>
     </main>
   );
 }

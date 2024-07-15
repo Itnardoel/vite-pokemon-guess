@@ -5,6 +5,9 @@ main {
   min-height: 100vh;
   flex-direction: column;
   padding: 24px;
+  background-image: url(https://img.freepik.com/free-vector/gradient-zoom-effect-blue-background_23-2149762303.jpg);
+  background-size: cover;
+  background-position: center;
 }
 
 h1 {
