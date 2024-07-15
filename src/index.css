@@ -1,0 +1,37 @@
+main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  flex-direction: column;
+  padding: 24px;
+}
+
+h1 {
+  text-align: center;
+}
+
+img {
+  image-rendering: pixelated;
+  filter: brightness(0%);
+  width: 400px;
+}
+
+form {
+  display: flex;
+}
+
+section {
+  font-size: xxx-large;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.show {
+  filter: none;
+}
+
+.icon-list {
+  margin: 1rem 0;
+}
