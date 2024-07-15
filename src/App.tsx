@@ -89,7 +89,12 @@ function App() {
             {count.incorrect}
             <i className="nes-icon close is-large" />
           </section>
-          <button className="nes-btn" type="button" onClick={onClick}>
+          <button
+            className={`nes-btn ${!submitted ? "is-disabled" : "is-primary"}`}
+            disabled={!submitted}
+            type="button"
+            onClick={onClick}
+          >
             Volver a jugar
           </button>
         </>
