@@ -1,14 +1,10 @@
-import {useEffect, useRef, useState} from "react";
+import {useRef, useState} from "react";
 
-import {Pokemon, Count} from "./types";
-import {default as api} from "./api";
+import {Count} from "./types";
+import usePokemon from "./hooks/usePokemon";
 
 function App() {
-  const [pokemon, setPokemon] = useState<Pokemon>({
-    id: 0,
-    name: "",
-    image: "",
-  });
+  const {pokemon, getRandomPokemon} = usePokemon();
   const [count, setCount] = useState<Count>(() => {
     const localData = localStorage.getItem("count");
 
@@ -16,16 +12,6 @@ function App() {
   });
   const [submitted, setSubmitted] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const randomPokemon = async () => {
-    const data = await api.random();
-
-    setPokemon(data);
-  };
-
-  useEffect(() => {
-    randomPokemon();
-  }, []);
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -42,6 +28,7 @@ function App() {
     if (name === pokemon.name) {
       $image?.classList.add("show");
       inputRef.current?.classList.add("is-success");
+
       setCount((prevState) => {
         const newState = {
           ...prevState,
@@ -54,6 +41,7 @@ function App() {
       });
     } else {
       inputRef.current?.classList.add("is-error");
+
       setCount((prevState) => {
         const newState = {
           ...prevState,
@@ -81,7 +69,7 @@ function App() {
 
     $image?.classList.remove("show");
 
-    randomPokemon();
+    getRandomPokemon();
   }
 
   return (
@@ -101,7 +89,7 @@ function App() {
       </form>
       <section className="icon-list">
         {count.correct}
-        <i className="nes-pokeball is-large" />
+        <i className="nes-pokeball" />
         {count.incorrect}
         <i className="nes-icon close is-large" />
       </section>
