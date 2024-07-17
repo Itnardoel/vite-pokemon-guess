@@ -5,6 +5,7 @@ import usePokemon from "./hooks/usePokemon";
 import AnswerForm from "./components/answerForm";
 import PointsCounter from "./components/pointsCounter";
 import PlayAgainButton from "./components/playAgainButton";
+import {capitalizeFirstLetter} from "./utils/formatting";
 
 function App() {
   const {pokemon, getRandomPokemon} = usePokemon();
@@ -19,6 +20,17 @@ function App() {
   return (
     <main>
       <h1>¿Quién es este Pokemon?</h1>
+      {submitted ? (
+        <h2
+          className={`nes-text ${
+            inputRef.current?.classList.contains("is-success") ? "is-success" : "is-error"
+          }`}
+        >
+          {capitalizeFirstLetter(pokemon.name)}
+        </h2>
+      ) : (
+        <h2>&nbsp;</h2>
+      )}
       <img src={pokemon.image} />
       <AnswerForm
         inputRef={inputRef}

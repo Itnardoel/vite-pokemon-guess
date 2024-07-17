@@ -36,6 +36,7 @@ function AnswerForm({inputRef, pokemon, setCount, setSubmitted, submitted}: Answ
         return newState;
       });
     } else {
+      $image?.classList.add("show");
       inputRef.current?.classList.add("is-error");
 
       setCount((prevState) => {
