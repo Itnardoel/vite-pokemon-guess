@@ -21,11 +21,12 @@ h2 {
 img {
   image-rendering: pixelated;
   filter: brightness(0%);
-  width: 400px;
+  width: 340px;
 }
 
 form {
   display: flex;
+  flex-direction: column;
 }
 
 section {
@@ -41,4 +42,14 @@ section {
 
 .icon-list {
   margin: 1rem 0;
+}
+
+@media (min-width: 640px) {
+  form {
+    flex-direction: row;
+  }
+
+  img {
+    width: 400px;
+  }
 }
